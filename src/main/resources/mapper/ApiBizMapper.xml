@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.admin.dao.ApiBizMapper">
+
+    <resultMap id="apiBiz" type="com.api.admin.model.ApiBiz" >
+        <result column="id" property="id" />
+        <result column="biz_name" property="bizName" />
+        <result column="orders" property="orders" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.biz_name,
+		t.orders
+	</sql>
+
+    <select id="pageList" parameterType="java.util.Map" resultMap="apiBiz">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM api_biz AS t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="bizName != null and bizName != ''">
+                AND t.biz_name like CONCAT(CONCAT('%', #{bizName}), '%')
+            </if>
+        </trim>
+        ORDER BY t.orders ASC
+        LIMIT #{offset}, #{pagesize}
+    </select>
+
+    <select id="pageListCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+        FROM api_biz AS t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="bizName != null and bizName != ''">
+                AND t.biz_name like CONCAT(CONCAT('%', #{bizName}), '%')
+            </if>
+        </trim>
+    </select>
+</mapper>

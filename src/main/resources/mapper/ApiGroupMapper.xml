@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.admin.dao.ApiGroupMapper">
+    <resultMap id="apiGroup" type="com.api.admin.model.ApiGroup" >
+        <result column="id" property="id" />
+        <result column="project_id" property="projectId" />
+        <result column="name" property="name" />
+        <result column="orders" property="orders" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.project_id,
+		t.name,
+		t.orders
+	</sql>
+</mapper>

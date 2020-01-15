@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.admin.dao.ApiDatatypeMapper">
+    <resultMap id="apiDataType" type="com.api.admin.model.ApiDatatype" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="about" property="about" />
+        <result column="biz_id" property="bizId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.name,
+		t.about,
+		t.biz_id
+	</sql>
+    <select id="pageListCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+        FROM api_datatype AS t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="bizId gte 0">
+                AND t.biz_id = #{bizId}
+            </if>
+            <if test="name != null and name != ''">
+                AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+        </trim>
+    </select>
+    <select id="pageList" parameterType="java.util.Map" resultMap="apiDataType">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM api_datatype AS t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="bizId gte 0">
+                AND t.biz_id = #{bizId}
+            </if>
+            <if test="name != null and name != ''">
+                AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+        </trim>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{pagesize}
+    </select>
+</mapper>

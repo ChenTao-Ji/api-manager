@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.admin.dao.ApiProjectMapper">
+    <resultMap id="apiProject" type="com.api.admin.model.ApiProject">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="base_url_product" property="baseUrlProduct"/>
+        <result column="base_url_ppe" property="baseUrlPpe"/>
+        <result column="base_url_qa" property="baseUrlQa"/>
+        <result column="biz_id" property="bizId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.name,
+		t.description,
+		t.base_url_product,
+		t.base_url_ppe,
+		t.base_url_qa,
+		t.biz_id
+	</sql>
+
+    <select id="pageList" parameterType="java.util.Map" resultMap="apiProject">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM api_project AS t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="name != null and name != ''">
+                AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="bizId gte 0">
+                AND t.biz_id = #{bizId}
+            </if>
+        </trim>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{pagesize}
+    </select>
+
+    <select id="pageListCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+        FROM api_project AS t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="name != null and name != ''">
+                AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="bizId gte 0">
+                AND t.biz_id = #{bizId}
+            </if>
+        </trim>
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.admin.dao.ApiDatatypeFiledsMapper">
+    <resultMap id="apiDataTypeField" type="com.api.admin.model.ApiDatatypeFileds" >
+        <result column="id" property="id" />
+        <result column="parent_datatype_id" property="parentDatatypeId" />
+        <result column="field_name" property="fieldName" />
+        <result column="field_about" property="fieldAbout" />
+        <result column="field_datatype_id" property="fieldDatatypeId" />
+        <result column="field_type" property="fieldType" />
+    </resultMap>
+    <sql id="Base_Column_List">
+		t.id,
+		t.parent_datatype_id,
+		t.field_name,
+		t.field_about,
+		t.field_datatype_id,
+		t.field_type
+	</sql>
+    <insert id="add" parameterType="java.util.List">
+        INSERT INTO api_datatype_fileds (
+        parent_datatype_id,
+        field_name,
+        field_about,
+        field_datatype_id,
+        field_type
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.parentDatatypeId},
+            #{item.fieldName},
+            #{item.fieldAbout},
+            #{item.fieldDatatypeId},
+            #{item.fieldType}
+            )
+        </foreach>
+    </insert>
+</mapper>
